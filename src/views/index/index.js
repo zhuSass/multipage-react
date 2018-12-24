@@ -4,7 +4,9 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 function App() {
-    return <div>jij4532534534i</div>
+    return <div>jij4532534534i
+        <code>423432</code>    
+    </div>
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

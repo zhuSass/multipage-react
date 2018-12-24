@@ -279,23 +279,6 @@ module.exports = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
-      // First, run the linter.
-      // It's important to do this before Babel processes the JS.
-      {
-        test: /\.(js|mjs|jsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: require.resolve('react-dev-utils/eslintFormatter'),
-              eslintPath: require.resolve('eslint'),
-              
-            },
-            loader: require.resolve('eslint-loader'),
-          },
-        ],
-        include: paths.appSrc,
-      },
       {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
@@ -307,8 +290,15 @@ module.exports = {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: require.resolve('url-loader'),
             options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
+              limit: 1000,
+              name: (filePath) => {
+                let replacePath = (filePath.split('\\src\\')[1]).replace(
+                  /(\.bmp)|(\.gif)|(\.jpe?g)|(\.png)$/, 
+                  '',
+                  ).replace(/\\/g,'\/');
+              
+                return `static/${replacePath}.[hash].[ext]`;
+              },
             },
           },
           // Process application JS with Babel.

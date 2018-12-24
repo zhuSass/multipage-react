@@ -184,8 +184,15 @@ module.exports = {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: require.resolve('url-loader'),
             options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
+              limit: 1000,
+              name: (filePath) => {
+                let replacePath = (filePath.split('\\src\\')[1]).replace(
+                  /(\.bmp)|(\.gif)|(\.jpe?g)|(\.png)$/, 
+                  '',
+                  ).replace(/\\/g,'\/');
+              
+                return `static/${replacePath}.[hash].[ext]`;
+              },
             },
           },
           // Process application JS with Babel.
